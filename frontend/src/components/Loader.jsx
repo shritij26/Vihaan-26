@@ -118,37 +118,34 @@ function Intro({ onComplete }) {
             animate={{ filter: isFinalState ? "blur(0px) brightness(1)" : (showDecryption ? "blur(8px) brightness(0.6)" : "blur(0px) brightness(1)") }}
             transition={{ duration: 1.5 }}
          >
-             {/* THE PERFORMANCE FIX: 
-                Render ALL images absolutely positioned. 
-                Only change OPACITY. 
-                This prevents SVG re-calculation lag.
-             */}
              {allImages.map((src, index) => {
-               // Is this the currently active image?
                const isActive = index === currentImageIndex;
                
                return (
-                 <div key={src} className="absolute inset-0 w-full h-full">
-                    {/* BACKGROUND (Blurred) */}
+                 <motion.div 
+                   key={src} 
+                   className="absolute inset-0 w-full h-full"
+                   initial={{ opacity: 0 }}
+                   animate={{ opacity: isActive ? 1 : 0 }}
+                   transition={{ duration: 0.15 }}
+                 >
                     <img
                       src={src}
                       alt=""
-                      className={`absolute inset-0 w-full h-full object-cover blur-xl scale-110 opacity-60 transition-opacity duration-0 ${isActive ? 'block' : 'hidden'}`} 
+                      className="absolute inset-0 w-full h-full object-cover blur-xl scale-110 opacity-60"
                     />
-                    
-                    {/* FOREGROUND (Sharp) */}
                     <img
                       src={src}
                       alt=""
-                      className={`absolute inset-0 w-full h-full object-contain z-10 transition-opacity duration-0 ${isActive ? 'block' : 'hidden'}`} 
+                      className="absolute inset-0 w-full h-full object-contain z-10"
                     />
-                 </div>
+                 </motion.div>
                );
              })}
          </motion.div>
       </motion.div>
 
-      {/* TEXT LAYER (Unchanged) */}
+      {/* TEXT LAYER */}
       {showDecryption && (
         <div className="absolute inset-0 w-full h-full flex items-center justify-center z-50 pointer-events-none">
           <motion.div
@@ -158,14 +155,14 @@ function Intro({ onComplete }) {
             className="relative transform -skew-x-12"
           >
             <span
-              className="select-none z-50 block text-[13vw] md:text-[9vw]" 
+              className="select-none z-50 block text-6xl md:text-8xl lg:text-9xl xl:text-10xl 2xl:text-11xl"
               style={{
-                fontFamily: '"Bangers", system-ui', 
+                fontFamily: '"Bangers", system-ui',
                 backgroundImage: "linear-gradient(to bottom, #FFD700 30%, #FF8C00 90%)",
                 backgroundClip: "text",
                 WebkitBackgroundClip: "text",
                 color: "transparent",
-                WebkitTextStroke: "1px black", 
+                WebkitTextStroke: "1px black",
                 filter: "drop-shadow(8px 8px 0px #000000)",
                 textAlign: "center",
                 lineHeight: "1",
