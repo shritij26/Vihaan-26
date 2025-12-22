@@ -1,159 +1,181 @@
-import { useState, useEffect } from "react";
-import { motion , useAnimationControls } from "framer-motion";
-import img1 from '../assets/image1.png';
-import img from '../assets/image.png';
-import img3 from '../assets/image3.png';
-import img4 from '../assets/image4.png';
-import img6 from '../assets/image6.png';
-import img7 from '../assets/image7.png';
-import img9 from '../assets/image9.png';
+import { useState, useEffect, useMemo } from "react";
+import { motion } from "framer-motion";
 
-const heroImages = [
-  img1, img3, img4, img6, img7, img9, img
-];
+// Images
+import img1 from '/loadingsvgs/img1.svg';
+import img2 from '/loadingsvgs/img2.svg'; 
+import img3 from '/loadingsvgs/img3.svg';
+import img4 from '/loadingsvgs/img4.svg';
+import img5 from '/loadingsvgs/img5.svg';
+import img6 from '/loadingsvgs/img6.svg';
+import img7 from '/loadingsvgs/img7.svg';
+import img8 from '/loadingsvgs/img8.svg';
+import img9 from '/loadingsvgs/img9.svg';
+import img from '../assets/image.png'; // Final Image
+
+const actionPanels = [img1, img2, img3, img4, img5, img6, img7, img8, img9];
+const finalImage = img; 
 
 const FINAL_TEXT = "VIHAAN 9.0";
-const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*";
-
-function getRandomString(length) {
-  let str = "";
-  for (let i = 0; i < length; i++) {
-    const char = FINAL_TEXT[i] === " " ? " " : CHARS[Math.floor(Math.random() * CHARS.length)];
-    str += char;
-  }
-  return str;
-}
+const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*{}/<>";
 
 function Intro({ onComplete }) {
-  const [currentPage, setCurrentPage] = useState(0);
-  const [prevPage, setPrevPage] = useState(null);
+  // Combine all images into one stable array for rendering
+  const allImages = useMemo(() => [...actionPanels, finalImage], []);
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0); // Use index instead of src string for speed
+  const [isFinalState, setIsFinalState] = useState(false);
   const [imagesLoaded, setImagesLoaded] = useState(false);
+   
   const [showDecryption, setShowDecryption] = useState(false);
-  const [decrypted, setDecrypted] = useState("");
-  const logoControls = useAnimationControls();
+  const [decryptedText, setDecryptedText] = useState(""); 
+  const [isTextDone, setIsTextDone] = useState(false);
 
-
+  // 1. Preload Images (Browser Cache)
   useEffect(() => {
-    let loaded = 0;
-    heroImages.forEach(src => {
-      const img = new window.Image();
-      img.src = src;
-      img.onload = () => {
-        loaded++;
-        if (loaded === heroImages.length) setImagesLoaded(true);
-      };
+    let loadedCount = 0;
+    const checkLoad = () => {
+      loadedCount++;
+      if (loadedCount === allImages.length) setImagesLoaded(true);
+    };
+    allImages.forEach((src) => {
+      const imgObj = new window.Image();
+      imgObj.src = src;
+      imgObj.onload = checkLoad;
+      imgObj.onerror = checkLoad;
     });
-  }, []);
+  }, [allImages]);
 
+  // 2. Master Timeline
   useEffect(() => {
     if (!imagesLoaded) return;
-    const sequence = async () => {
-      for (let i = 0; i < heroImages.length; i++) {
-        setPrevPage(i === 0 ? null : i - 1);
-        setCurrentPage(i);
-        if (i === heroImages.length - 1) {
-          setShowDecryption(true);
-        }
-        await new Promise(resolve => setTimeout(resolve, 700));
-      }
-    };
-    sequence();
-  }, [imagesLoaded, logoControls]);
 
-  // Decryption effect (all letters scramble together, then solve)
+    // Loop through the first 9 images (indices 0 to 8)
+    const flipInterval = setInterval(() => {
+      if (!isFinalState) {
+        setCurrentImageIndex((prev) => (prev + 1) % actionPanels.length);
+      }
+    }, 150); 
+
+    const textTimer = setTimeout(() => setShowDecryption(true), 3000);
+
+    const finishTimer = setTimeout(() => {
+      clearInterval(flipInterval);
+      // Set to the last image (index 9)
+      setCurrentImageIndex(actionPanels.length); 
+      setIsFinalState(true);       
+    }, 7000);
+
+    return () => {
+      clearInterval(flipInterval);
+      clearTimeout(textTimer);
+      clearTimeout(finishTimer);
+    };
+  }, [imagesLoaded, isFinalState, allImages]); 
+
+  // 3. Text Logic
   useEffect(() => {
     if (!showDecryption) return;
-    let cycles = 0;
-    const maxCycles = 5;
-    let interval = setInterval(() => {
-      if (cycles < maxCycles) {
-        setDecrypted(getRandomString(FINAL_TEXT.length));
-      } else {
-        setDecrypted(FINAL_TEXT);
+
+    let iterations = 0;
+    const interval = setInterval(() => {
+      setDecryptedText(() => {
+        let currentString = "";
+        const currentProgress = Math.floor(iterations);
+        for (let i = 0; i < FINAL_TEXT.length; i++) {
+          if (i < currentProgress) currentString += FINAL_TEXT[i];
+          else if (i === currentProgress) currentString += CHARS[Math.floor(Math.random() * CHARS.length)];
+        }
+        return currentString;
+      });
+
+      if (iterations > FINAL_TEXT.length) {
         clearInterval(interval);
-        setTimeout(onComplete, 1400); 
+        setIsTextDone(true);
+        setTimeout(onComplete, 1500);
       }
-      cycles++;
-    }, 200); 
+      iterations += 1 / 8; 
+    }, 50);
+
     return () => clearInterval(interval);
   }, [showDecryption, onComplete]);
 
-  const fadeDuration = 0.5; 
+  if (!imagesLoaded) return <div className="fixed inset-0 bg-black z-50" />;
 
   return (
-    <div className="fixed inset-0 w-screen h-screen overflow-hidden z-50 bg-black">
-      {!showDecryption && (
-        <>
-          <motion.div
-            key={`blur-bg-${currentPage}`}
-            className="fixed inset-0 w-screen h-screen bg-cover bg-center scale-110 filter blur-lg"
-            style={{
-              backgroundImage: `url(${heroImages[currentPage]})`
-            }}
-            initial={{ opacity: prevPage === null ? 1 : 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: fadeDuration, ease: "easeInOut" }}
-          />
-          {prevPage !== null && (
-            <motion.div
-              key={`blur-bg-prev-${prevPage}`}
-              className="fixed inset-0 w-screen h-screen bg-cover bg-center scale-110 filter blur-lg"
-              style={{
-                backgroundImage: `url(${heroImages[prevPage]})`
-              }}
-              initial={{ opacity: 1 }}
-              animate={{ opacity: 0 }}
-              transition={{ duration: fadeDuration, ease: "easeInOut" }}
-            />
-          )}
-          <motion.div
-            key={`curr-${currentPage}`}
-            className="fixed inset-0 w-screen h-screen bg-contain bg-no-repeat bg-center"
-            style={{
-              backgroundImage: `url(${heroImages[currentPage]})`
-            }}
-            initial={{ opacity: prevPage === null ? 1 : 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: fadeDuration, ease: "easeInOut" }}
-          />
-          {prevPage !== null && (
-            <motion.div
-              key={`prev-${prevPage}`}
-              className="fixed inset-0 w-screen h-screen bg-contain bg-no-repeat bg-center"
-              style={{
-                backgroundImage: `url(${heroImages[prevPage]})`
-              }}
-              initial={{ opacity: 1 }}
-              animate={{ opacity: 0 }}
-              transition={{ duration: fadeDuration, ease: "easeInOut" }}
-            />
-          )}
-        </>
-      )}
+    <div className="fixed inset-0 w-screen h-screen overflow-hidden z-50 bg-black flex flex-col justify-center items-center">
+      
+      {/* STRIP CONTAINER */}
+      <motion.div 
+        initial={{ height: "40vh" }}
+        animate={{ height: "70vh" }}
+        transition={{ duration: 7, ease: "easeInOut" }}
+        className="relative w-full border-y-4 border-white shadow-[0_0_30px_rgba(255,255,255,0.1)] bg-gray-900 overflow-hidden"
+      >
+         {/* IMAGE LAYER CONTAINER */}
+         <motion.div
+            className="w-full h-full relative"
+            animate={{ filter: isFinalState ? "blur(0px) brightness(1)" : (showDecryption ? "blur(8px) brightness(0.6)" : "blur(0px) brightness(1)") }}
+            transition={{ duration: 1.5 }}
+         >
+             {/* THE PERFORMANCE FIX: 
+                Render ALL images absolutely positioned. 
+                Only change OPACITY. 
+                This prevents SVG re-calculation lag.
+             */}
+             {allImages.map((src, index) => {
+               // Is this the currently active image?
+               const isActive = index === currentImageIndex;
+               
+               return (
+                 <div key={src} className="absolute inset-0 w-full h-full">
+                    {/* BACKGROUND (Blurred) */}
+                    <img
+                      src={src}
+                      alt=""
+                      className={`absolute inset-0 w-full h-full object-cover blur-xl scale-110 opacity-60 transition-opacity duration-0 ${isActive ? 'block' : 'hidden'}`} 
+                    />
+                    
+                    {/* FOREGROUND (Sharp) */}
+                    <img
+                      src={src}
+                      alt=""
+                      className={`absolute inset-0 w-full h-full object-contain z-10 transition-opacity duration-0 ${isActive ? 'block' : 'hidden'}`} 
+                    />
+                 </div>
+               );
+             })}
+         </motion.div>
+      </motion.div>
+
+      {/* TEXT LAYER (Unchanged) */}
       {showDecryption && (
-        <div className="absolute inset-0 w-full h-full flex items-center justify-center z-50">
-          <div
-            className="absolute inset-0 w-full h-full bg-cover bg-center scale-110 filter blur-lg"
-            style={{
-              backgroundImage: `url(${heroImages[heroImages.length - 1]})`
-            }}
-          />
-          <div
-            className="absolute inset-0 w-full h-full bg-contain bg-no-repeat bg-center"
-            style={{
-              backgroundImage: `url(${heroImages[heroImages.length - 1]})`
-            }}
-          />
-          {/* Decryption text */}
-          <span
-            className="absolute inset-0 flex mt-10 items-center justify-center text-[13vw] md:text-[11vw] font-extrabold tracking-wider bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-400 bg-clip-text text-transparent drop-shadow-[0_3px_8px_rgba(0,0,0.7,0.8)] font-bangers select-none font-mono z-50"
-            style={{
-              WebkitTextStroke: "2px rgba(0,0,0.7,0.9)",
-              textStroke: "4px rgba(0,0,0.7,0.9)"
-            }}
+        <div className="absolute inset-0 w-full h-full flex items-center justify-center z-50 pointer-events-none">
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.3, type: "spring" }}
+            className="relative transform -skew-x-12"
           >
-            {decrypted}
-          </span>
+            <span
+              className="select-none z-50 block text-[13vw] md:text-[9vw]" 
+              style={{
+                fontFamily: '"Bangers", system-ui', 
+                backgroundImage: "linear-gradient(to bottom, #FFD700 30%, #FF8C00 90%)",
+                backgroundClip: "text",
+                WebkitBackgroundClip: "text",
+                color: "transparent",
+                WebkitTextStroke: "1px black", 
+                filter: "drop-shadow(8px 8px 0px #000000)",
+                textAlign: "center",
+                lineHeight: "1",
+                letterSpacing: "0.05em"
+              }}
+            >
+              {decryptedText}
+              {!isTextDone && <span className="animate-pulse text-white ml-2">_</span>}
+            </span>
+          </motion.div>
         </div>
       )}
     </div>
