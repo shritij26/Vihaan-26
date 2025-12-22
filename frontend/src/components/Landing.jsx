@@ -162,7 +162,7 @@ const [open, setOpen] = useState(false);
             VIHAAN 9.0
           </h1>
 
-          {/* SUBTEXT */}
+        
           <p
             className="paragraph"
             style={{
@@ -194,7 +194,7 @@ const [open, setOpen] = useState(false);
     </div>
 
     <div>
-      
+
     </div>
     </>
   );
