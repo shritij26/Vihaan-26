@@ -1,4 +1,7 @@
 @import "tailwindcss";
+.font-bangers {
+  font-family: 'Bangers', cursive;
+}
 .heading {
  font-family: "Bangers", cursive;
   font-weight: 400;
