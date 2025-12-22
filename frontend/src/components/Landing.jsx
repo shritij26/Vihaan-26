@@ -139,8 +139,6 @@ const [open, setOpen] = useState(false);
   )}
 </nav>
 
-
-        {/*HERO */}
         <div
           style={{
             flex: 1,
