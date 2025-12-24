@@ -6,7 +6,7 @@
         align-items: center;
         justify-content: center;
       }
-      button {
+      .commonbutton {
         width: 140px;
         height: 50px;
         position: relative;
@@ -67,10 +67,10 @@
         bottom: 0;
         left: 85%;
       }
-      button:active .top {
+      .commonbutton:active .top {
         transform: translateY(10px);
       }
-      button::before {
+      .commonbutton::before {
         position: absolute;
         content: "";
         width: calc(100% + 2px);
@@ -92,6 +92,6 @@
         left: -20px;
         transition: 0.25s;
       }
-      button:active .top::before {
+      .commonbutton:active .top::before {
         left: calc(100% + 20px);
       }

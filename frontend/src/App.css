@@ -45,30 +45,6 @@
   text-align: right;
 }
 
-.button-text {
-  font-family: "Gaegu", cursive;
-   width: 200px;
-  height: 47px;
-  border: 3px solid #000000;
-  border-radius: 10px;
-
- 
-  background-color: #ffffff;
- font-size: 22px;
-  color: #000000;
-
- 
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
- 
-  cursor: pointer;
-}
-
 .nav-text {
   font-family: "Julee", cursive;
   

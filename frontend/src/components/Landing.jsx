@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 import "../App.css";
-import Button from "../utils/button";
+import Button from "../utils/button/button.jsx";
 
 export default function Landing() {
 
