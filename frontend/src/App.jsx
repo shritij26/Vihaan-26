@@ -3,6 +3,7 @@ import Landing from './components/Landing.jsx'
 import Intro from './components/Loader.jsx'
 import Tracks from './components/Tracks.jsx'
 import Landing2 from './components/Landing2.jsx'
+import Gallery from './components/Gallery/Gallery.jsx'
 import './App.css'
 
 function App() {
@@ -33,6 +34,10 @@ function App() {
 
       <div id="landing2">
         <Landing2 />
+      </div>
+
+      <div id="Gallery">
+        <Gallery></Gallery>
       </div>
     </>
   )
