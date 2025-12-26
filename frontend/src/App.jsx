@@ -4,6 +4,7 @@ import Intro from './components/Loader.jsx'
 import Tracks from './components/Tracks.jsx'
 import Landing2 from './components/Landing2.jsx'
 import Faqs from './components/Faqs/faqs.jsx'
+import Gallery from './components/Gallery/Gallery.jsx'
 import './App.css'
 
 function App() {
@@ -40,6 +41,9 @@ function App() {
         <Faqs />
       </div>
       
+      <div id="Gallery">
+        <Gallery></Gallery>
+      </div>
     </>
   )
 }
