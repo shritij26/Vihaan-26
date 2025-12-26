@@ -1,0 +1,13 @@
+.About {
+    color: white;
+    font-family: "Bangers", "Impact", sans-serif;
+    -webkit-text-stroke: 1px black;
+    width: 438px;
+    height: 729px;
+    background-color: black;
+    background-repeat: no-repeat;
+    background-size: cover;
+    /* padding-top: 20px; */
+    /* padding-left: 35px; */
+}
+
