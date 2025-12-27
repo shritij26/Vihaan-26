@@ -2,13 +2,13 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-black text-white font-bangers">
+    <footer className="w-full bg-[#0E0E0E] text-white font-bangers">
       <div className="
         max-w-7xl mx-auto
-        px-4 py-10
+        px-2 py-10
         flex flex-row flex-wrap
         justify-center md:justify-between
-        gap-x-12 gap-y-10
+        gap-x-22 gap-y-10
       ">
         {/* LOGO */}
         <div className="flex flex-col items-center">
@@ -23,7 +23,7 @@ export default function Footer() {
         <div className="flex flex-col min-w-[260px]">
           <h2 className="text-4xl mb-2">VENUE</h2>
 
-          <div className="font-mono text-lg mb-3 flex gap-2 items-start">
+          <div className="font-serif text-sm mb-3 flex gap-2 items-start">
             <i className="fa-sharp fa-solid fa-location-dot mt-1"></i>
             <span>
               Delhi Technological<br />University
@@ -54,7 +54,7 @@ export default function Footer() {
         <div className="flex flex-col min-w-[260px]">
           <h2 className="text-4xl mb-2">CONTACT US</h2>
 
-          <div className="font-mono text-lg flex gap-2 mb-3">
+          <div className="font-serif text-lg flex gap-2 mb-3">
             <i className="fa-sharp fa-solid fa-phone mt-1"></i>
             <div className="flex  flex-col">
               <span>Jahan Sharma</span>
@@ -62,7 +62,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="font-mono text-lg flex gap-2 mb-3">
+          <div className="font-serif text-lg flex gap-2 mb-3">
             <i className="fa-sharp fa-solid fa-phone mt-1"></i>
             <div className="flex flex-col">
               <span>Rudit Madaan</span>
@@ -70,7 +70,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="font-mono text-lg flex gap-2">
+          <div className="font-serif text-lg flex gap-2">
             <i className="fa-solid fa-message mt-1"></i>
             <span>ieeedtucs123@gmail.com</span>
           </div>
@@ -79,25 +79,25 @@ export default function Footer() {
         {/* SOCIALS + SCROLL */}
         <div className="flex flex-col items-center min-w-[220px]">
           <h2 className="text-4xl mb-2">SOCIAL MEDIA</h2>
-          <div className="font-mono text-lg mb-4">Code, Chaos, Comics</div>
+          <div className="font-serif text-lg mb-4">Code, Chaos, Comics</div>
 
-          <div className="flex gap-4 mb-4 justify-center md:justify-start">
+          <div className="flex gap-4 mb-4 justify-center md:justify-start text-black">
 
   {/* DISCORD */}
   <a
-    href="https://discord.com"
+    href="https://m.facebook.com/ieeedtu/"
     target="_blank"
     rel="noopener noreferrer"
     className="relative inline-flex items-center justify-center group"
   >
     <svg
       viewBox="0 0 100 100"
-      className="w-14 h-14 transition-transform duration-300 group-hover:scale-110 group-hover:drop-shadow-lg"
+      className="w-14 h-14  transition-transform duration-300 group-hover:scale-110 group-hover:drop-shadow-lg"
       aria-hidden="true"
     >
       <polygon
         fill="#2563eb"
-        className="transition-colors duration-300 group-hover:fill-indigo-400"
+        className="transition-colors bg-black duration-300 group-hover:fill-indigo-400"
         points="
           50,0 57,18 74,6 70,26 90,20 80,38
           100,50 80,62 90,80 70,74 74,94 57,82
@@ -106,7 +106,7 @@ export default function Footer() {
         "
       />
     </svg>
-    <i className="fa-brands fa-discord absolute text-white text-2xl" />
+    <i className="fa-brands fa-facebook absolute text-white text-2xl" />
   </a>
 
   {/* INSTAGRAM */}

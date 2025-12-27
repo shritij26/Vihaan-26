@@ -7,7 +7,7 @@ function Alumni() {
         <h1>2100+</h1>
         <p>IEEE DTU ALUMNI</p>
       </div>
-      <button>VISIT IEEE DTU PAGE</button>
+      <a href="https://www.ieeedtu.in" target='_blank'><button>VISIT IEEE DTU PAGE</button></a>
     </div>
   )
 }

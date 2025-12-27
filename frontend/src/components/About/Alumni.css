@@ -32,5 +32,22 @@
   color: white;
   padding: 8px 14px;
   border-radius: 8px;
+  font-size: 20px;
   cursor: pointer;
+}
+
+.alumni-card button {
+  background: transparent;
+  font-family: 'Bangers', cursive;
+  border: 1px solid white;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 20px;
+  cursor: pointer;
+}
+.alumni-card button:hover {
+  background: white;
+  color: black;
+  transition: 0.3s ease-in-out;
 }

@@ -38,7 +38,7 @@ function App() {
         <Tracks />
       </div>
       
-      <div id="Gallery">
+      <div id="gallery">
         <Gallery></Gallery>
       </div>
 
