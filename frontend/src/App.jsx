@@ -37,7 +37,7 @@ function App() {
       </div>
 
       <div id="Gallery">
-        <Gallery></Gallery>
+        <Gallery/>
       </div>
     </>
   )

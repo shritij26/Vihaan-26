@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default function Landing() {
-  return (
+    return (
     <div>Landing</div>
   )
 }
